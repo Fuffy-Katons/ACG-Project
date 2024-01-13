@@ -1,0 +1,5 @@
+﻿  camera.cpp
+  main.cpp
+C:\Users\bogda\Desktop\Visual Studio Projects\GameEngine\GameEngine\main.cpp(90,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  GameEngine.vcxproj -> C:\Users\bogda\Desktop\Visual Studio Projects\GameEngine\Debug\GameEngine.exe
