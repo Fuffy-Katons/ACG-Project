@@ -1,5 +1,13 @@
 ﻿  camera.cpp
+  window.cpp
   main.cpp
-C:\Users\bogda\Desktop\Visual Studio Projects\GameEngine\GameEngine\main.cpp(90,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Labs-opengl\GameEngine\GameEngine\main.cpp(183,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  meshLoaderObj.cpp
+  mesh.cpp
+  shader.cpp
+  texture.cpp
   Generating Code...
-  GameEngine.vcxproj -> C:\Users\bogda\Desktop\Visual Studio Projects\GameEngine\Debug\GameEngine.exe
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+glew32s.lib(glew.obj) : warning LNK4099: PDB '' was not found with 'glew32s.lib(glew.obj)' or at ''; linking object as if no debug info
+  GameEngine.vcxproj -> D:\Labs-opengl\GameEngine\Debug\GameEngine.exe

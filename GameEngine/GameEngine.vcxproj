@@ -135,6 +135,8 @@
     <ClInclude Include="Model Loading\texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\cube_fragment_shader.glsl" />
+    <None Include="Shaders\cube_vertex_shader.glsl" />
     <None Include="Shaders\fragment_shader.glsl" />
     <None Include="Shaders\sun_fragment_shader.glsl" />
     <None Include="Shaders\sun_vertex_shader.glsl" />
