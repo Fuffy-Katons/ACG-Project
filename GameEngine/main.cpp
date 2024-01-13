@@ -122,8 +122,8 @@ int main()
 	vert[2].normals = glm::normalize(glm::cross(vert[3].pos - vert[2].pos, vert[1].pos - vert[2].pos));
 	vert[3].normals = glm::normalize(glm::cross(vert[0].pos - vert[3].pos, vert[2].pos - vert[3].pos));
 
-	std::vector<int> ind = { 0, 1, 3, 4, 5, 6,   
-		1, 2, 3, 4, 5, 6 };
+	std::vector<int> ind = { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,   
+		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
 
 	std::vector<Texture> textures;
 	textures.push_back(Texture());
@@ -271,6 +271,75 @@ int main()
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 	
+
+		plane.draw(shader);
+		//plane2
+	
+		// Assuming you have a list of positions for your instances
+		std::vector<glm::vec3> positions = {
+			glm::vec3(180.0f, -20.0f, 0.0f),
+			glm::vec3(-180.0f, -20.0f, 0.0f),  // Add more positions as needed
+			glm::vec3(0.0f, -20.0f, 145.0f),
+			glm::vec3(0.0f, -20.0f, -145.0f),
+			glm::vec3(-180.0f, -20.0f, -145.0f),
+			glm::vec3(180.0f, -20.0f, 145.0f),
+			glm::vec3(180.0f, -20.0f, -145.0f),
+			glm::vec3(-180.0f, -20.0f, 145.0f),
+			glm::vec3(360.0f, -20.0f, -145.0f),
+			glm::vec3(-360.0f, -20.0f, -145.0f),
+			glm::vec3(360.0f, -20.0f, 0.0f),
+			glm::vec3(-360.0f, -20.0f, 0.0f),
+			glm::vec3(360.0f, -20.0f, 145.0f),
+			glm::vec3(-360.0f, -20.0f, 145.0f),
+			glm::vec3(360.0f, -20.0f, -290.0f),
+			glm::vec3(-360.0f, -20.0f, -290.0f),
+			glm::vec3(360.0f, -20.0f, 290.0f),
+			glm::vec3(-360.0f, -20.0f, 290.0f),
+			glm::vec3(0.0f, -20.0f, 290.0f),
+			glm::vec3(0.0f, -20.0f, -290.0f),
+			glm::vec3(180.0f, -20.0f, 290.0f),
+			glm::vec3(-180.0f, -20.0f, 290.0f),
+			glm::vec3(180.0f, -20.0f, -290.0f),
+			glm::vec3(-180.0f, -20.0f, -290.0f),
+			glm::vec3(360.0f, -20.0f, 435.0f),
+			glm::vec3(-360.0f, -20.0f, 435.0f),
+			glm::vec3(360.0f, -20.0f, -435.0f),
+			glm::vec3(-360.0f, -20.0f, -435.0f),
+			glm::vec3(0.0f, -20.0f, 435.0f),
+			glm::vec3(0.0f, -20.0f, -435.0f),
+			glm::vec3(180.0f, -20.0f, 435.0f),
+			glm::vec3(-180.0f, -20.0f, 435.0f),
+			glm::vec3(180.0f, -20.0f, -435.0f),
+			glm::vec3(-180.0f, -20.0f, -435.0f),
+			glm::vec3(540.0f, -20.0f, 0.0f),
+			glm::vec3(-540.0f, -20.0f, 0.0f),
+			glm::vec3(540.0f, -20.0f, 145.0f),
+			glm::vec3(-540.0f, -20.0f, 145.0f),
+			glm::vec3(540.0f, -20.0f, -145.0f),
+			glm::vec3(-540.0f, -20.0f, -145.0f),
+			glm::vec3(540.0f, -20.0f, 290.0f),
+			glm::vec3(-540.0f, -20.0f, 290.0f),
+			glm::vec3(540.0f, -20.0f, -290.0f),
+			glm::vec3(-540.0f, -20.0f, -290.0f),
+			glm::vec3(540.0f, -20.0f, 435.0f),
+			glm::vec3(-540.0f, -20.0f, 435.0f),
+			glm::vec3(540.0f, -20.0f, -435.0f),
+			glm::vec3(-540.0f, -20.0f, -435.0f),
+			
+			// ...
+		};
+
+		// Loop through each position and render the object at that position
+		for (const auto& position : positions) {
+			glm::mat4 ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, position);
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			plane.draw(shader);
+		}
+
 
 		plane.draw(shader);
 
