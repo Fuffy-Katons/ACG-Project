@@ -1,4 +1,7 @@
 #include "window.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 Window::Window(char* name, int width, int height)
 {
@@ -62,6 +65,14 @@ void Window::init()
 	}
 
 	std::cout << "Open GL " << glGetString(GL_VERSION) << std::endl;
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+     
+	
+	ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+	ImGui_ImplOpenGL3_Init();
 }
 
 void Window::update()

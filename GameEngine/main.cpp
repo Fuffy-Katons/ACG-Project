@@ -6,7 +6,11 @@
 #include "Model Loading\meshLoaderObj.h"
 #include <vector>
 #include <string>
-void processKeyboardInput ();
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
+void processKeyboardInput();
 
 
 float deltaTime = 0.0f;	// time between current frame and last frame
@@ -36,7 +40,7 @@ int main()
 			"Resources/Textures/Cubemap/skybox/bottom.jpg",
 			"Resources/Textures/Cubemap/skybox/front.jpg",
 			"Resources/Textures/Cubemap/skybox/back.jpg"
-			};
+	};
 	unsigned int cubemapTexture = loadCubemap(faces);
 	float skyboxVertices[] = {
 		// positions          
@@ -90,7 +94,7 @@ int main()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		
+
 
 	//Textures
 	GLuint tex = loadBMP("Resources/Textures/wood.bmp");
@@ -125,7 +129,7 @@ int main()
 	vert[2].normals = glm::normalize(glm::cross(vert[3].pos - vert[2].pos, vert[1].pos - vert[2].pos));
 	vert[3].normals = glm::normalize(glm::cross(vert[0].pos - vert[3].pos, vert[2].pos - vert[3].pos));
 
-	std::vector<int> ind = { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,   
+	std::vector<int> ind = { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
 
 	std::vector<Texture> textures;
@@ -143,12 +147,12 @@ int main()
 	textures3[0].id = tex3;
 	textures3[0].type = "texture_diffuse";
 
-	
+
 	std::vector<Texture> textures4;
 	textures4.push_back(Texture());
 	textures4[0].id = tex4;
 	textures4[0].type = "texture_diffuse";
-	
+
 	std::vector<Texture> textures5;
 	textures5.push_back(Texture());
 	textures5[0].id = tex5;
@@ -184,10 +188,13 @@ int main()
 	while (!window.isPressed(GLFW_KEY_ESCAPE) &&
 		glfwWindowShouldClose(window.getWindow()) == 0)
 	{
-		
+
 		window.clear();
 
-	
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		ImGui::ShowDemoWindow();
 
 
 		float currentFrame = glfwGetTime();
@@ -201,7 +208,7 @@ int main()
 		{
 			std::cout << "Pressing mouse button" << std::endl;
 		}
-		 //// Code for the light ////
+		//// Code for the light ////
 
 		sunShader.use();
 
@@ -218,7 +225,7 @@ int main()
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
 		sun.draw(sunShader);
-		
+
 
 		shader.use();
 		GLuint MatrixID4 = glGetUniformLocation(shader.getId(), "MVP");
@@ -237,11 +244,11 @@ int main()
 
 		///// Test Obj files for helicopter ////
 		shader.use();
-		
+
 
 		ModelMatrix = glm::mat4(1.0);
 		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(10.0f, -20.0f, 0.0f));
-			ModelMatrix = glm::scale(ModelMatrix, glm::vec3(0.015f, 0.015f, 0.015f));
+		ModelMatrix = glm::scale(ModelMatrix, glm::vec3(0.015f, 0.015f, 0.015f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 		glUniformMatrix4fv(MatrixID4, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID3, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -252,7 +259,7 @@ int main()
 		helicopter.draw(shader);
 		//// End code for the light ////
 
-		
+
 		///// Test Obj files for rubble ////
 		shader.use();
 
@@ -304,17 +311,9 @@ int main()
 
 		///// Test plane Obj file //////
 
-		ModelMatrix = glm::mat4(1.0);
 
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -20.0f, 0.0f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-	
-
-		plane.draw(shader);
 		//plane2
-	
+
 		// Assuming you have a list of positions for your instances
 		std::vector<glm::vec3> positions = {
 			glm::vec3(180.0f, -20.0f, 0.0f),
@@ -365,7 +364,7 @@ int main()
 			glm::vec3(-540.0f, -20.0f, 435.0f),
 			glm::vec3(540.0f, -20.0f, -435.0f),
 			glm::vec3(-540.0f, -20.0f, -435.0f),
-			
+			glm::vec3(0.0f, -20.0f, 0.0f),
 			// ...
 		};
 
@@ -392,21 +391,26 @@ int main()
 		for (const auto& robotPosition : robotPositions) {
 			glm::mat4 ModelMatrix = glm::mat4(1.0);
 
-			// Animate the Droid walking - you can adjust the animation parameters
+			// Animate the walking motion
 			float translation = std::sin(glfwGetTime() * animationSpeed) * stepSize;
+			float legRotation = std::sin(glfwGetTime() * animationSpeed * 2.0f) * 0.5f; // Adjust rotation speed and angle
 
-			// Apply translation to the Droid's position
+			// Translate the droid to the position and add walking translation
 			ModelMatrix = glm::translate(ModelMatrix, robotPosition + glm::vec3(translation, 0.0f, 0.0f));
 
+			// Rotate the left leg
+			glm::mat4 leftLegRotation = glm::rotate(glm::mat4(1.0), legRotation, glm::vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = ModelMatrix * leftLegRotation;
+
+			// Set up the MVP matrix and draw
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-			// Draw the Droid
 			robot.draw(shader);
 		}
 
-		plane.draw(shader);
+
 
 		glBindVertexArray(0);
 
@@ -414,7 +418,7 @@ int main()
 		skyboxShader.use();
 		glm::mat4 view = glm::mat4(glm::mat3(camera.getViewMatrix())); // remove translation from the view matrix
 		glUniformMatrix4fv(glGetUniformLocation(skyboxShader.getId(), "view"), 1, GL_FALSE, &view[0][0]);
-		
+
 		glUniformMatrix4fv(glGetUniformLocation(skyboxShader.getId(), "projection"), 1, GL_FALSE, &ProjectionMatrix[0][0]);
 
 		glUniform1i(glGetUniformLocation(skyboxShader.getId(), "skybox"), 0);
@@ -425,7 +429,11 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
 		glDepthFunc(GL_LESS); // set depth function back to default
-		
+
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 		window.update();
 	}
 }
@@ -448,7 +456,7 @@ void processKeyboardInput()
 	if (window.isPressed(GLFW_KEY_F))
 		camera.keyboardMoveDown(cameraSpeed);
 
-	
+
 
 	//rotation
 	if (window.isPressed(GLFW_KEY_LEFT))
