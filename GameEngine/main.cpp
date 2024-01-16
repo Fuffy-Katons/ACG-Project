@@ -12,6 +12,8 @@ void processKeyboardInput ();
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
+
+
 Window window("Game Engine", 800, 800);
 Camera camera;
 
@@ -97,6 +99,7 @@ int main()
 	GLuint tex4 = loadBMP("Resources/Textures/med_brick.bmp");
 	GLuint tex5 = loadBMP("Resources/Textures/water.bmp");
 	GLuint tex6 = loadBMP("Resources/Textures/Glock.bmp");
+	GLuint tex7 = loadBMP("Resources/Textures/Heicopter.bmp");
 	glEnable(GL_DEPTH_TEST);
 
 	//Test custom mesh loading
@@ -157,6 +160,11 @@ int main()
 	textures6[0].id = tex6;
 	textures6[0].type = "texture_diffuse";
 
+	std::vector<Texture> textures7;
+	textures7.push_back(Texture());
+	textures7[0].id = tex7;
+	textures7[0].type = "texture_diffuse";
+
 
 	Mesh mesh(vert, ind, textures3);
 
@@ -166,9 +174,11 @@ int main()
 	Mesh sun = loader.loadObj("Resources/Models/sphere.obj");
 	Mesh box = loader.loadObj("Resources/Models/cube.obj", textures);
 	Mesh plane = loader.loadObj("Resources/Models/plane.obj", textures5);
-	
+	Mesh helicopter = loader.loadObj("Resources/Models/Helicopter.obj", textures7);
 	Mesh house = loader.loadObj("Resources/Models/house.obj", textures4);
 	Mesh glock = loader.loadObj("Resources/Models/GLOCK19.obj", textures6);
+	Mesh robot = loader.loadObj("Resources/Models/Robot.obj", textures6);
+	Mesh rubble = loader.loadObj("Resources/Models/Rubble.obj", textures4);
 
 	//check if we close the window or press the escape button
 	while (!window.isPressed(GLFW_KEY_ESCAPE) &&
@@ -225,9 +235,39 @@ int main()
 
 		house.draw(shader);
 
+		///// Test Obj files for helicopter ////
+		shader.use();
+		
+
+		ModelMatrix = glm::mat4(1.0);
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(10.0f, -20.0f, 0.0f));
+			ModelMatrix = glm::scale(ModelMatrix, glm::vec3(0.015f, 0.015f, 0.015f));
+		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		glUniformMatrix4fv(MatrixID4, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID3, 1, GL_FALSE, &ModelMatrix[0][0]);
+		glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+		glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+
+		helicopter.draw(shader);
 		//// End code for the light ////
 
 		
+		///// Test Obj files for rubble ////
+		shader.use();
+
+
+		ModelMatrix = glm::mat4(1.0);
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(20.0f, -20.0f, 20.0f));
+		ModelMatrix = glm::scale(ModelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
+		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		glUniformMatrix4fv(MatrixID4, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID3, 1, GL_FALSE, &ModelMatrix[0][0]);
+		glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+		glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+
+		rubble.draw(shader);
 
 
 		shader.use();
@@ -340,6 +380,31 @@ int main()
 			plane.draw(shader);
 		}
 
+		//droid
+		std::vector<glm::vec3> robotPositions = {
+	glm::vec3(10.0f, -20.0f, 0.0f),
+	glm::vec3(20.0f, -20.0f, 0.0f),
+	// Add more positions as needed
+		};
+		float animationSpeed = 2.0f;  // Adjust the animation speed as needed
+		float walkCycleDuration = 2.0f;// Adjust the walk cycle duration as needed
+		float stepSize = 0.1f;
+		for (const auto& robotPosition : robotPositions) {
+			glm::mat4 ModelMatrix = glm::mat4(1.0);
+
+			// Animate the Droid walking - you can adjust the animation parameters
+			float translation = std::sin(glfwGetTime() * animationSpeed) * stepSize;
+
+			// Apply translation to the Droid's position
+			ModelMatrix = glm::translate(ModelMatrix, robotPosition + glm::vec3(translation, 0.0f, 0.0f));
+
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			// Draw the Droid
+			robot.draw(shader);
+		}
 
 		plane.draw(shader);
 
