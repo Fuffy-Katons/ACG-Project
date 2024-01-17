@@ -11,6 +11,44 @@
 #include "imgui_impl_opengl3.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp> 
+
+bool showSettingsWindow = false;
+float volume = 0.5f; // Default volume
+float fov = 90.0f; // Default field of view
+int resolutionIndex = 0; // Index for the selected resolution
+bool vsyncEnabled = false;
+
+const char* resolutions[] = { "800x600", "1024x768", "1280x720", "1920x1080", "2560x1440" };
+
+
+void ShowSettingsWindow()
+{
+	if (showSettingsWindow)
+	{
+		ImGui::SetCursorPos(ImVec2(300, 40));
+		ImGui::Begin("Settings", &showSettingsWindow);
+
+		// Slider for volume
+		ImGui::SliderFloat("Volume", &volume, 0.0f, 1.0f);
+
+		// Slider for FOV
+		ImGui::SliderFloat("Field of View", &fov, 60.0f, 120.0f);
+
+		// Dropdown list for resolution
+		ImGui::Combo("Resolution", &resolutionIndex, resolutions, IM_ARRAYSIZE(resolutions));
+
+		// Checkbox for VSync
+		ImGui::Checkbox("VSync", &vsyncEnabled);
+
+		ImGui::End();
+	}
+}
+
+
+
+
+
+
 void processKeyboardInput();
 
 
@@ -230,6 +268,18 @@ int main()
 		ImGui::End();
 		*/
 
+		ImGui::SetCursorPos(ImVec2(20, 100));
+		ImGui::Begin("My Window");
+
+		// Button to open settings window
+		if (ImGui::Button("Open Settings"))
+		{
+			showSettingsWindow = true;
+		}
+
+		ImGui::End();
+
+		ShowSettingsWindow();
 		
 		if (ImGui::Button("My Button"))
 		{
