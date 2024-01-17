@@ -44,6 +44,50 @@ void ShowSettingsWindow()
 	}
 }
 
+int currentQuest = 0; // 0 means no quest is selected
+
+void ShowQuestDetails(int questNumber)
+{
+	switch (questNumber)
+	{
+	case 1:
+		ImGui::Text("Defeat 20 Droids");
+		break;
+	case 2:
+		ImGui::Text("Turn off the production by hitting the power button");
+		break;
+	case 3:
+		ImGui::Text("Pick up the RailGun");
+		break;
+	case 4:
+		ImGui::Text("Defeat 10 Droids using the RailGun");
+		break;
+	case 5:
+		ImGui::Text("Kill Megabot");
+		break;
+	default:
+		break;
+	}
+}
+
+void ShowQuestWindow()
+{
+	ImGui::SetCursorPos(ImVec2(0, 0));
+	ImGui::Begin("Quests");
+
+	// Buttons for each quest
+	if (ImGui::Button("Quest 1")) currentQuest = 1;
+	if (ImGui::Button("Quest 2")) currentQuest = 2;
+	if (ImGui::Button("Quest 3")) currentQuest = 3;
+	if (ImGui::Button("Quest 4")) currentQuest = 4;
+	if (ImGui::Button("Quest 5")) currentQuest = 5;
+
+	// Display the details of the selected quest
+	ShowQuestDetails(currentQuest);
+
+	ImGui::End();
+}
+
 
 
 
@@ -286,7 +330,7 @@ int main()
 			// Button code goes here
 		}
 
-		// Create 5 different plain text boxes
+		/*		
 		ImGui::SetCursorPos(ImVec2(20, 40)); // Position for the first text box
 		ImGui::Begin("Quest 1");
 		ImGui::Text("Defeat 20 Droids");
@@ -310,7 +354,10 @@ int main()
 		ImGui::SetCursorPos(ImVec2(100, 200)); // Position for the fifth text box
 		ImGui::Begin("Quest 5");
 		ImGui::Text("Kill Megabot");
-		ImGui::End();
+		ImGui::End(); 
+		*/
+
+		ShowQuestWindow();
 
 
 
