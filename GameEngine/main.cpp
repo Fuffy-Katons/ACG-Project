@@ -197,7 +197,10 @@ int main()
 		ImGui::NewFrame();
 
 		//ImGui::ShowDemoWindow();
+		
+		
 
+		/*
 		ImGui::Begin("Quest 1");
 		ImGui::Text("Defeat 20 Droids");
 		ImGui::End();
@@ -214,6 +217,39 @@ int main()
 		ImGui::Text("Defeat 10 Droids using the RailGun");
 		ImGui::End();
 
+		ImGui::Begin("Quest 5");
+		ImGui::Text("Kill Megabot");
+		ImGui::End();
+		*/
+
+		
+		if (ImGui::Button("My Button"))
+		{
+			// Button code goes here
+		}
+
+		// Create 5 different plain text boxes
+		ImGui::SetCursorPos(ImVec2(20, 40)); // Position for the first text box
+		ImGui::Begin("Quest 1");
+		ImGui::Text("Defeat 20 Droids");
+		ImGui::End();
+
+		ImGui::SetCursorPos(ImVec2(40, 80)); // Position for the second text box
+		ImGui::Begin("Quest 2");
+		ImGui::Text("Turn off the production by hitting the power button");
+		ImGui::End();
+
+		ImGui::SetCursorPos(ImVec2(60, 120)); // Position for the third text box
+		ImGui::Begin("Quest 3");
+		ImGui::Text("Pick up the RailGun");
+		ImGui::End();
+
+		ImGui::SetCursorPos(ImVec2(80, 160)); // Position for the fourth text box
+		ImGui::Begin("Quest 4");
+		ImGui::Text("Defeat 10 Droids using the RailGun");
+		ImGui::End();
+
+		ImGui::SetCursorPos(ImVec2(100, 200)); // Position for the fifth text box
 		ImGui::Begin("Quest 5");
 		ImGui::Text("Kill Megabot");
 		ImGui::End();
