@@ -1,5 +1,5 @@
 ﻿  main.cpp
-C:\Users\bogda\Documents\GitHub\ACG-Project\GameEngine\main.cpp(225,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\bogda\Documents\GitHub\ACG-Project\GameEngine\main.cpp(422,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\bogda\Documents\GitHub\ACG-Project\GameEngine\main.cpp(423,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  GameEngine.vcxproj -> C:\Users\bogda\Documents\GitHub\ACG-Project\Debug\GameEngine.exe
+C:\Users\Rodcris\Documents\GitHub\ACG-Project\GameEngine\main.cpp(233,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Rodcris\Documents\GitHub\ACG-Project\GameEngine\main.cpp(438,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Rodcris\Documents\GitHub\ACG-Project\GameEngine\main.cpp(439,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  GameEngine.vcxproj -> C:\Users\Rodcris\Documents\GitHub\ACG-Project\Debug\GameEngine.exe

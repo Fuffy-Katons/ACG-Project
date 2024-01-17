@@ -9,7 +9,8 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp> 
 void processKeyboardInput();
 
 
@@ -105,6 +106,7 @@ int main()
 	GLuint tex5 = loadBMP("Resources/Textures/water.bmp");
 	GLuint tex6 = loadBMP("Resources/Textures/Glock.bmp");
 	GLuint tex7 = loadBMP("Resources/Textures/Heicopter.bmp");
+	GLuint tex8 = loadBMP("Resources/Textures/sand.bmp");
 	glEnable(GL_DEPTH_TEST);
 
 	//Test custom mesh loading
@@ -170,6 +172,11 @@ int main()
 	textures7[0].id = tex7;
 	textures7[0].type = "texture_diffuse";
 
+	std::vector<Texture> textures8;
+	textures8.push_back(Texture());
+	textures8[0].id = tex8;
+	textures8[0].type = "texture_diffuse";
+
 
 	Mesh mesh(vert, ind, textures3);
 
@@ -178,12 +185,13 @@ int main()
 	MeshLoaderObj loader;
 	Mesh sun = loader.loadObj("Resources/Models/sphere.obj");
 	Mesh box = loader.loadObj("Resources/Models/cube.obj", textures);
-	Mesh plane = loader.loadObj("Resources/Models/plane.obj", textures5);
+	Mesh plane = loader.loadObj("Resources/Models/plane.obj", textures8);
 	Mesh helicopter = loader.loadObj("Resources/Models/Helicopter.obj", textures7);
 	Mesh house = loader.loadObj("Resources/Models/house.obj", textures4);
 	Mesh glock = loader.loadObj("Resources/Models/GLOCK19.obj", textures6);
 	Mesh robot = loader.loadObj("Resources/Models/Robot.obj", textures6);
 	Mesh rubble = loader.loadObj("Resources/Models/Rubble.obj", textures4);
+	Mesh wall = loader.loadObj("Resources/Models/3 piece Wall.obj", textures4);
 
 	//check if we close the window or press the escape button
 	while (!window.isPressed(GLFW_KEY_ESCAPE) &&
@@ -256,16 +264,7 @@ int main()
 		GLuint MatrixID4 = glGetUniformLocation(shader.getId(), "MVP");
 		GLuint ModelMatrixID3 = glGetUniformLocation(shader.getId(), "model");
 
-		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(10.0f, 5.0f, 0.0f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID4, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID3, 1, GL_FALSE, &ModelMatrix[0][0]);
-		glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
-		glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-		glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
-
-		house.draw(shader);
+		
 
 		///// Test Obj files for helicopter ////
 		shader.use();
@@ -403,7 +402,24 @@ int main()
 
 			plane.draw(shader);
 		}
+		//Walls
+		std::vector<glm::vec3> positions1 = {
+			glm::vec3(40.0f, -20.0f, 0.0f),
+			glm::vec3(80.0f, -20.0f, -1.0f),
 
+		};
+		for (const auto& position : positions1) {
+			glm::mat4 ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, position);
+			ModelMatrix = glm::rotate(ModelMatrix, glm::radians(90.0f), glm::vec3(10.0f, 10.0f, 10.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			wall.draw(shader);
+		}
+		 
+		
 		//droid
 		std::vector<glm::vec3> robotPositions = {
 	//glm::vec3(10.0f, -20.0f, 0.0f),
