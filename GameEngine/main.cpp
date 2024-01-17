@@ -13,6 +13,7 @@
 void processKeyboardInput();
 
 
+
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
@@ -194,7 +195,31 @@ int main()
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		ImGui::ShowDemoWindow();
+
+		//ImGui::ShowDemoWindow();
+
+		ImGui::Begin("Quest 1");
+		ImGui::Text("Defeat 20 Droids");
+		ImGui::End();
+
+		ImGui::Begin("Quest 2");
+		ImGui::Text("Turn off the production by hitting the power button");
+		ImGui::End();
+
+		ImGui::Begin("Quest 3");
+		ImGui::Text("Pick up the RailGun");
+		ImGui::End();
+
+		ImGui::Begin("Quest 4");
+		ImGui::Text("Defeat 10 Droids using the RailGun");
+		ImGui::End();
+
+		ImGui::Begin("Quest 5");
+		ImGui::Text("Kill Megabot");
+		ImGui::End();
+
+
+
 
 
 		float currentFrame = glfwGetTime();
@@ -381,13 +406,15 @@ int main()
 
 		//droid
 		std::vector<glm::vec3> robotPositions = {
-	glm::vec3(10.0f, -20.0f, 0.0f),
+	//glm::vec3(10.0f, -20.0f, 0.0f),
 	glm::vec3(20.0f, -20.0f, 0.0f),
+	glm::vec3(30.0f, -20.0f, 0.0f),
+	glm::vec3(40.0f, -20.0f, 0.0f),
 	// Add more positions as needed
 		};
 		float animationSpeed = 2.0f;  // Adjust the animation speed as needed
 		float walkCycleDuration = 2.0f;// Adjust the walk cycle duration as needed
-		float stepSize = 0.1f;
+		float stepSize = 5.0f;
 		for (const auto& robotPosition : robotPositions) {
 			glm::mat4 ModelMatrix = glm::mat4(1.0);
 
